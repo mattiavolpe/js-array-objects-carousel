@@ -61,12 +61,20 @@ const images = [
 const carouselElement = document.querySelector(".carousel");
 insertMoviesToDom(carouselElement, images);
 
+// Select the thumbnail container element from the DOM
+const thumbnailsContainer = document.querySelector(".thumbnails");
+insertThumbnailsToDom(thumbnailsContainer, images);
+
 // Select all the inserted movies from the DOM
 const moviesElements = document.querySelectorAll(".single_movie");
+
+// Select the thumbnails from the DOM
+const thumbnailsElements = document.querySelectorAll(".single_thumbnail");
 
 // Add the active class to the first movie, to make it the only visible one
 let activeMovie = 0;
 moviesElements[activeMovie].classList.add("active");
+thumbnailsElements[activeMovie].classList.add("active");
 
 // Select the left and right arrows from the DOM
 const leftArrow = document.querySelector(".fa-chevron-left");
@@ -74,12 +82,19 @@ const rightArrow = document.querySelector(".fa-chevron-right");
 
 // Listen for click on the left arrow for active movie switch
 leftArrow.addEventListener("click", () => {
-  activeMovie = switchToNextMovie(moviesElements, activeMovie);
+  activeMovie = switchToNextMovie(moviesElements, thumbnailsElements, activeMovie);
 });
 
 // Listen for click on the right arrow for active movie switch
 rightArrow.addEventListener("click", () => {
-  activeMovie = switchToPreviousMovie(moviesElements, activeMovie)
+  activeMovie = switchToPreviousMovie(moviesElements, thumbnailsElements, activeMovie)
+});
+
+// Listen for click on a thumbnail so set the relative movie as active
+thumbnailsElements.forEach((thumbnail, index) => {
+  thumbnail.addEventListener("click", () => {
+    activeMovie = setActiveMovieByThumbnail(moviesElements, thumbnailsElements, activeMovie, index);
+  });
 });
 
 // <---------- FUNCTIONS ---------->
@@ -100,28 +115,60 @@ function insertMoviesToDom(carouselContainer, moviesArray) {
   });
 }
 
+function insertThumbnailsToDom(thumbnailsContainer, moviesArray) {
+  moviesArray.forEach(movie => {
+    thumbnailsContainer.innerHTML += `
+    <div class="single_thumbnail">
+    <img src="./assets/${movie.image}" alt="${movie.title} cover image">
+    </div>`;
+  });
+}
+
 /**
  * Takes the current active movie and switches it's active state with the next one
  * @param {HTMLElement[]} moviesIntoDom The list of movies elements inserted into the DOM
+ * @param {HTMLElement[]} thumbnailsIntoDom The list of thumbnails elements inserted into the DOM
  * @param {number} activeMovie The index of the current visible movie
  * @returns {number} The index of the next movie
  */
-function switchToNextMovie(moviesIntoDom, activeMovie) {
+function switchToNextMovie(moviesIntoDom, thumbnailsIntoDom, activeMovie) {
   moviesIntoDom[activeMovie].classList.remove("active");
+  thumbnailsIntoDom[activeMovie].classList.remove("active");
   activeMovie == moviesIntoDom.length - 1 ? activeMovie = 0 : activeMovie++;
   moviesIntoDom[activeMovie].classList.add("active");
+  thumbnailsIntoDom[activeMovie].classList.add("active");
   return activeMovie;
 }
 
 /**
  * Takes the current active movie and switches it's active state with the previous one
  * @param {HTMLElement[]} moviesIntoDom The list of movies elements inserted into the DOM
+ * @param {HTMLElement[]} thumbnailsIntoDom The list of thumbnails elements inserted into the DOM
  * @param {number} activeMovie The index of the current visible movie
  * @returns {number} The index of the previous movie
  */
-function switchToPreviousMovie(moviesIntoDom, activeMovie) {
+function switchToPreviousMovie(moviesIntoDom, thumbnailsIntoDom, activeMovie) {
   moviesIntoDom[activeMovie].classList.remove("active");
+  thumbnailsIntoDom[activeMovie].classList.remove("active");
   activeMovie == 0 ? activeMovie = moviesIntoDom.length - 1 : activeMovie--;
   moviesIntoDom[activeMovie].classList.add("active");
+  thumbnailsIntoDom[activeMovie].classList.add("active");
+  return activeMovie;
+}
+
+/**
+ * Takes the current active movie and switches it's active state with the one relative to the thumbnail that received the click event
+ * @param {HTMLElement[]} moviesIntoDom The list of movies elements inserted into the DOM
+ * @param {HTMLElement[]} thumbnailsIntoDom The list of thumbnails elements inserted into the DOM
+ * @param {number} activeMovie The index of the current visible movie
+ * @param {number} index The index of the thumbnail that received the click event
+ * @returns {number} The index of the previous movie
+ */
+function setActiveMovieByThumbnail(moviesIntoDom, thumbnailsIntoDom, activeMovie, index) {
+  moviesIntoDom[activeMovie].classList.remove("active");
+  thumbnailsIntoDom[activeMovie].classList.remove("active");
+  activeMovie = index;
+  moviesIntoDom[activeMovie].classList.add("active");
+  thumbnailsIntoDom[activeMovie].classList.add("active");
   return activeMovie;
 }
