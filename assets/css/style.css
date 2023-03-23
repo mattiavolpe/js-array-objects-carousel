@@ -46,7 +46,10 @@ body {
 }
 
 .fa-chevron-left,
-.fa-chevron-right {
+.fa-chevron-right,
+.fa-play,
+.fa-stop,
+.fa-arrow-rotate-left {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,6 +63,24 @@ body {
   transform: translate(0, -50%);
   z-index: 1;
   cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+
+.carousel:hover .fa-chevron-left,
+.carousel:hover .fa-chevron-right,
+.carousel:hover .fa-play,
+.carousel:hover .fa-stop,
+.carousel:hover .fa-arrow-rotate-left {
+  opacity: 0.2;
+}
+
+.carousel .fa-chevron-left:hover,
+.carousel .fa-chevron-right:hover,
+.carousel .fa-play:hover,
+.carousel .fa-stop:hover,
+.carousel .fa-arrow-rotate-left:hover {
+  opacity: 1;
 }
 
 .fa-chevron-left {
@@ -70,18 +91,9 @@ body {
 .fa-play,
 .fa-stop,
 .fa-arrow-rotate-left {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  background-color: #cccccccc;
-  position: absolute;
+  right: unset;
   top: 5px;
   transform: translate(-50%, 0);
-  z-index: 1;
-  cursor: pointer;
 }
 
 .fa-play {
@@ -101,6 +113,7 @@ body {
   top: 0;
   left: 50%;
   transform: translate(-50%, -100%);
+  text-align: center;
 }
 
 .movie_description {
@@ -118,7 +131,7 @@ body {
 }
 
 .carousel:hover .movie_description {
-  opacity: 100%;
+  opacity: 1;
 }
 
 .thumbnails {
