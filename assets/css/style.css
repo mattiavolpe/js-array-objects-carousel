@@ -41,6 +41,10 @@ img {
   height: 50%;
 }
 
+.single_movie:not(.active) {
+  display: none;
+}
+
 .fa-chevron-left,
 .fa-chevron-right {
   display: flex;
