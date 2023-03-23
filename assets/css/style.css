@@ -1,3 +1,5 @@
+/* #region Common */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,6 +16,10 @@ body {
   height: 100svh;
 }
 
+/* #endregion Common */
+
+/* #region Utility */
+
 .container {
   position: relative;
   width: 96%;
@@ -22,6 +28,8 @@ body {
   height: 100%;
 }
 
+/* #endregion Utility */
+
 .title {
   padding: 1rem 0;
   text-align: center;
@@ -29,6 +37,8 @@ body {
   font-size: 2.2rem;
   text-decoration: underline;
 }
+
+/* #region Carousel */
 
 .carousel {
   position: absolute;
@@ -51,6 +61,7 @@ body {
   transform: translate(-50%, -50%);
   max-width: 100%;
   max-height: 100%;
+  animation: fade-in 0.6s 1;
 }
 
 .fa-chevron-left,
@@ -123,6 +134,8 @@ body {
   transform: translate(-50%, -100%);
   text-align: center;
   color: #e1e1e1;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .movie_description {
@@ -136,12 +149,18 @@ body {
   text-align: center;
   color: #e1e1e1;
   background-color: #000000aa;
+  font-size: 1.125rem;
+  font-weight: 400;
   transition: opacity 0.6s;
 }
 
 .carousel:hover .movie_description {
   opacity: 1;
 }
+
+/* #endregion Carousel */
+
+/* #region Thumbnails */
 
 .thumbnails {
   display: flex;
@@ -181,6 +200,10 @@ body {
   width: 100%;
 }
 
+/* #endregion Thumbnails */
+
+/* #region Responsive */
+
 @media screen and (min-width: 490px) {
 
   .carousel {
@@ -207,3 +230,28 @@ body {
   }
   
 }
+
+@media screen and (min-width: 557px) {
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+}
+
+/* #endregion Responsive */
+
+/* #region Keyframes */
+
+@keyframes fade-in {
+
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+  
+}
+
+/* #endregion Keyframes */
