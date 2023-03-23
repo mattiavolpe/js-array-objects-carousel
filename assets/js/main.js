@@ -57,33 +57,71 @@ const images = [
   }
 ];
 
+// Select the carousel element from the DOM
 const carouselElement = document.querySelector(".carousel");
+insertMoviesToDom(carouselElement, images);
 
-images.forEach((movie, index) => {
-  carouselElement.innerHTML += `
-  <div class="single_movie">
-  <h2 class="movie_title">${movie.title}</h2>
-  <img src="./assets/${movie.image}" alt="Movie ${index + 1}">
-  <h3 class="movie_description">${movie.text}</h3>
-  </div>`;
-});
-
+// Select all the inserted movies from the DOM
 const moviesElements = document.querySelectorAll(".single_movie");
-moviesElements[0].classList.add("active");
 
+// Add the active class to the first movie, to make it the only visible one
+let activeMovie = 0;
+moviesElements[activeMovie].classList.add("active");
+
+// Select the left and right arrows from the DOM
 const leftArrow = document.querySelector(".fa-chevron-left");
 const rightArrow = document.querySelector(".fa-chevron-right");
 
-let activeMovie = 0;
-
+// Listen for click on the left arrow for active movie switch
 leftArrow.addEventListener("click", () => {
-  moviesElements[activeMovie].classList.remove("active");
-  activeMovie == moviesElements.length - 1 ? activeMovie = 0 : activeMovie++;
-  moviesElements[activeMovie].classList.add("active");
+  activeMovie = switchToNextMovie(moviesElements, activeMovie);
 });
 
+// Listen for click on the right arrow for active movie switch
 rightArrow.addEventListener("click", () => {
-  moviesElements[activeMovie].classList.remove("active");
-  activeMovie == 0 ? activeMovie = moviesElements.length - 1 : activeMovie--;
-  moviesElements[activeMovie].classList.add("active");
+  activeMovie = switchToPreviousMovie(moviesElements, activeMovie)
 });
+
+// <---------- FUNCTIONS ---------->
+
+/**
+ * Creates the markup for every single movie in the array and prints it to the DOM
+ * @param {HTMLElement} carouselContainer The carousel element that will contain the movie image and its infos
+ * @param {object[]} moviesArray The array of objects that contains all the movies infos
+ */
+function insertMoviesToDom(carouselContainer, moviesArray) {
+  moviesArray.forEach(movie => {
+    carouselContainer.innerHTML += `
+    <div class="single_movie">
+    <h2 class="movie_title">${movie.title}</h2>
+    <img src="./assets/${movie.image}" alt="${movie.title} cover image">
+    <h3 class="movie_description">${movie.text}</h3>
+    </div>`;
+  });
+}
+
+/**
+ * Takes the current active movie and switches it's active state with the next one
+ * @param {HTMLElement[]} moviesIntoDom The list of movies elements inserted into the DOM
+ * @param {number} activeMovie The index of the current visible movie
+ * @returns {number} The index of the next movie
+ */
+function switchToNextMovie(moviesIntoDom, activeMovie) {
+  moviesIntoDom[activeMovie].classList.remove("active");
+  activeMovie == moviesIntoDom.length - 1 ? activeMovie = 0 : activeMovie++;
+  moviesIntoDom[activeMovie].classList.add("active");
+  return activeMovie;
+}
+
+/**
+ * Takes the current active movie and switches it's active state with the previous one
+ * @param {HTMLElement[]} moviesIntoDom The list of movies elements inserted into the DOM
+ * @param {number} activeMovie The index of the current visible movie
+ * @returns {number} The index of the previous movie
+ */
+function switchToPreviousMovie(moviesIntoDom, activeMovie) {
+  moviesIntoDom[activeMovie].classList.remove("active");
+  activeMovie == 0 ? activeMovie = moviesIntoDom.length - 1 : activeMovie--;
+  moviesIntoDom[activeMovie].classList.add("active");
+  return activeMovie;
+}
