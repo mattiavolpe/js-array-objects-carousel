@@ -53,7 +53,7 @@ body {
   width: 30px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  border: 1px solid;
+  background-color: #cccccccc;
   position: absolute;
   right: 20px;
   top: 50%;
@@ -65,6 +65,35 @@ body {
 .fa-chevron-left {
   right: unset;
   left: 20px;
+}
+
+.fa-play,
+.fa-stop,
+.fa-arrow-rotate-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: #cccccccc;
+  position: absolute;
+  top: 5px;
+  transform: translate(-50%, 0);
+  z-index: 1;
+  cursor: pointer;
+}
+
+.fa-play {
+  left: 50%;
+}
+
+.fa-stop {
+  left: calc(50% + 50px);
+}
+
+.fa-arrow-rotate-left {
+  left: calc(50% - 50px);
 }
 
 .movie_title {

@@ -80,14 +80,42 @@ thumbnailsElements[activeMovie].classList.add("active");
 const leftArrow = document.querySelector(".fa-chevron-left");
 const rightArrow = document.querySelector(".fa-chevron-right");
 
+// Select the play button, the stop button and the reverse button from the DOM
+const playButton = document.querySelector(".fa-play");
+const stopButton = document.querySelector(".fa-stop");
+const reverseButton = document.querySelector(".fa-arrow-rotate-left");
+
+// Initialize a variable that will contain the timeout ID
+let autoplay;
+// Initialize a variable that will contain the direction of the autoplay
+let direction = "forward";
+
+// Listen for click on autoplay button and start the autoplay based on the direction
+playButton.addEventListener("click", () => {
+  autoplay = setInterval(() => {
+    direction == "forward" ? rightArrow.click() : leftArrow.click();
+  }, 3000);
+});
+
+// Listen for click on stop button to stop the autoplay
+stopButton.addEventListener("click", () => {
+  clearInterval(autoplay);
+});
+
+// Listen for click on reverse button to change the direction of the autoplay
+reverseButton.addEventListener("click", () => {
+  direction == "forward" ? direction = "backward" : direction = "forward";
+  console.log(direction);
+})
+
 // Listen for click on the left arrow for active movie switch
 leftArrow.addEventListener("click", () => {
-  activeMovie = switchToNextMovie(moviesElements, thumbnailsElements, activeMovie);
+  activeMovie = switchToPreviousMovie(moviesElements, thumbnailsElements, activeMovie);
 });
 
 // Listen for click on the right arrow for active movie switch
 rightArrow.addEventListener("click", () => {
-  activeMovie = switchToPreviousMovie(moviesElements, thumbnailsElements, activeMovie)
+  activeMovie = switchToNextMovie(moviesElements, thumbnailsElements, activeMovie)
 });
 
 // Listen for click on a thumbnail so set the relative movie as active
@@ -115,6 +143,11 @@ function insertMoviesToDom(carouselContainer, moviesArray) {
   });
 }
 
+/**
+ * Creates the markup for the thumbnail of every single movie in the array and prints it to the DOM
+ * @param {HTMLElement} thumbnailsContainer The thumbnails element that will contain the movie thumbnails
+ * @param {object[]} moviesArray The array of objects that contains all the movies infos
+ */
 function insertThumbnailsToDom(thumbnailsContainer, moviesArray) {
   moviesArray.forEach(movie => {
     thumbnailsContainer.innerHTML += `
