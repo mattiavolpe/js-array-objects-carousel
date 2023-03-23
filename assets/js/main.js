@@ -80,9 +80,8 @@ thumbnailsElements[activeMovie].classList.add("active");
 const leftArrow = document.querySelector(".fa-chevron-left");
 const rightArrow = document.querySelector(".fa-chevron-right");
 
-// Select the play button, the stop button and the reverse button from the DOM
+// Select the play/pause button and the reverse button from the DOM
 const playButton = document.querySelector(".fa-play");
-const stopButton = document.querySelector(".fa-stop");
 const reverseButton = document.querySelector(".fa-arrow-rotate-left");
 
 // Initialize a variable that will contain the timeout ID
@@ -90,33 +89,39 @@ let autoplay;
 // Initialize a variable that will contain the direction of the autoplay
 let direction = "forward";
 
-// Listen for click on autoplay button and start the autoplay based on the direction
+// Listen for click on autoplay button and start/stop the autoplay based on the direction
 playButton.addEventListener("click", () => {
-  autoplay = setInterval(() => {
-    direction == "forward" ? rightArrow.click() : leftArrow.click();
-  }, 3000);
-});
-
-// Listen for click on stop button to stop the autoplay
-stopButton.addEventListener("click", () => {
-  clearInterval(autoplay);
+  if (playButton.classList.contains("fa-play")) {
+    autoplay = setInterval(() => {
+      direction == "forward" ? rightArrow.click() : leftArrow.click();
+    }, 3000);
+    playButton.classList.remove("fa-play");
+    playButton.classList.add("fa-pause");
+  } else {
+    clearInterval(autoplay);
+    playButton.classList.remove("fa-pause");
+    playButton.classList.add("fa-play");
+  }
 });
 
 // Listen for click on reverse button to change the direction of the autoplay
 reverseButton.addEventListener("click", () => {
-  direction == "forward" ? direction = "backward" : direction = "forward";
-  console.log(direction);
-})
+  if (direction == "forward") {
+    direction = "backward";
+    reverseButton.classList.remove("fa-arrow-rotate-left");
+    reverseButton.classList.add("fa-arrow-rotate-right");
+  } else {
+    direction = "forward";
+    reverseButton.classList.remove("fa-arrow-rotate-right");
+    reverseButton.classList.add("fa-arrow-rotate-left");
+  }
+});
 
 // Listen for click on the left arrow for active movie switch
-leftArrow.addEventListener("click", () => {
-  activeMovie = switchToPreviousMovie(moviesElements, thumbnailsElements, activeMovie);
-});
+leftArrow.addEventListener("click", () => activeMovie = switchToPreviousMovie(moviesElements, thumbnailsElements, activeMovie));
 
 // Listen for click on the right arrow for active movie switch
-rightArrow.addEventListener("click", () => {
-  activeMovie = switchToNextMovie(moviesElements, thumbnailsElements, activeMovie)
-});
+rightArrow.addEventListener("click", () => activeMovie = switchToNextMovie(moviesElements, thumbnailsElements, activeMovie));
 
 // Listen for click on a thumbnail so set the relative movie as active
 thumbnailsElements.forEach((thumbnail, index) => {
